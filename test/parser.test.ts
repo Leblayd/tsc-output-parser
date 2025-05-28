@@ -48,7 +48,7 @@ describe('tsc-output-parser', () => {
   });
 
   test('brace-in-path', () => {
-    const items = parse(inputs['brace-in-path.txt']);
+    const items = parse(inputs['parentheses-in-path.txt']);
     assert.deepStrictEqual(items, [
       {
         type: 'Item',
