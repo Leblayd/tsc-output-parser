@@ -58,6 +58,14 @@ TsError = type:TsErrorType " TS" num:Integer {
 // any harm here so left it as an example.
 TsErrorType = type:("error" / "warning") { return type }
 
+// File path, for example "node_modules/connected-react-router/index.d.ts"
+Path = path:$((!(Cursor ":") .)+) {
+  return {
+    type: 'Path',
+    value: path.trim()
+  }
+}
+
 Cursor = "(" _ line:Integer _ "," _ col:Integer _ ")" {
   return {
     type: 'Cursor',
@@ -65,15 +73,6 @@ Cursor = "(" _ line:Integer _ "," _ col:Integer _ ")" {
       line,
       col,
     }
-  }
-}
-
-// File path, for example "node_modules/connected-react-router/index.d.ts"
-// A '(' character in file path breaks this parser. Not very common though.
-Path = path:[^\n\r(]+ {
-  return {
-    type: 'Path',
-    value: path.join('')
   }
 }
 

@@ -1,1 +1,2 @@
-path/to/fil(e.ts(1,2): error TS0:abc
+path/to/(parent)/file.ts(1,2): error TS0:abc
+path/to/(3,4)/file.ts(1,2): error TS0:abc

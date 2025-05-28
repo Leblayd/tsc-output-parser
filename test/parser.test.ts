@@ -2,8 +2,7 @@ import assert from 'assert';
 import fs from 'fs';
 import path from 'path';
 
-// eslint-disable-next-line no-restricted-imports
-import { parse, SyntaxError } from '../src/parser';
+import { parse, SyntaxError } from 'src/parser';
 
 const inputsDir = path.join(__dirname, 'inputs/');
 const files = fs.readdirSync(inputsDir);
@@ -49,12 +48,63 @@ describe('tsc-output-parser', () => {
   });
 
   test('brace-in-path', () => {
-    // This issue could probably be solved with better grammar
-    // However '(' character in file path is rare and an edge case.
-    // This unit test documents the flaw in the grammar.
-    assert.throws(() => {
-      parse(inputs['brace-in-path.txt']);
-    }, SyntaxError);
+    const items = parse(inputs['brace-in-path.txt']);
+    assert.deepStrictEqual(items, [
+      {
+        type: 'Item',
+        value: {
+          path: {
+            type: 'Path',
+            value: 'path/to/(parent)/file.ts',
+          },
+          cursor: {
+            type: 'Cursor',
+            value: {
+              line: 1,
+              col: 2,
+            },
+          },
+          tsError: {
+            type: 'TsError',
+            value: {
+              type: 'error',
+              errorString: 'TS0',
+            },
+          },
+          message: {
+            type: 'Message',
+            value: 'abc\n',
+          },
+        },
+      },
+      {
+        type: 'Item',
+        value: {
+          path: {
+            type: 'Path',
+            value: 'path/to/(3,4)/file.ts',
+          },
+          cursor: {
+            type: 'Cursor',
+            value: {
+              line: 1,
+              col: 2,
+            },
+          },
+          tsError: {
+            type: 'TsError',
+            value: {
+              type: 'error',
+              errorString: 'TS0',
+            },
+          },
+          message: {
+            type: 'Message',
+            value: 'abc\n',
+          },
+        },
+      },
+    ]);
   });
 
   test('cursor-line-not-number', () => {
