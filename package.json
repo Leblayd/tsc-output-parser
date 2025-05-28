@@ -1,5 +1,5 @@
 {
-  "name": "@aivenio/tsc-output-parser",
+  "name": "@leblayd/tsc-output-parser",
   "version": "2.2.0",
   "description": "Parses errors from tsc output to a structured JSON format.",
   "bin": {
